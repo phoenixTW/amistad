@@ -1,0 +1,22 @@
+doctype html
+html
+	head
+		title Welcome
+		link(rel='stylesheet', href='/stylesheets/style.css') 
+		link(rel='stylesheet', href='/stylesheets/pages.css')
+		script(type="text/javascript", src = 'jquery/jquery-2.1.1.js')
+	body
+		div(class = 'mainDivision')
+			div(class = 'header')
+				div(class = 'headerContent')
+					div(class = 'kaustBookTitle')
+						a(href = '?#{email}' class = 'kaustBookTitleLink') amistad
+						&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+						a(href = '/logout' method = 'post') logout
+						&nbsp;&nbsp;&nbsp;&nbsp;
+						span #{email}
+		div(class = 'postForm')
+			input(class = 'postBox', type = 'text')
+			input(type = 'submit', id = 'post', value = 'POST')
+			<hr></hr>
+			div(id = 'comments')

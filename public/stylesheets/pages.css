@@ -1,0 +1,107 @@
+div {
+	border: 2px black solid;
+}
+
+
+.postForm {
+	height: 100%;
+	width: 50%;
+	float: left;
+	display: inline;
+}
+.container {
+	height: 250%;
+	width: 100%;
+	background-image: url("../images/bgHome.jpg"); 
+}
+
+.postBox {
+	height: 70%;
+	width: 50%;
+}
+.bodyContainer {
+	height: 10%;
+	width: 100%;
+	background: #192D3C;
+}
+
+.templateBody {
+	height: 6%;
+	width: 100%;
+	background: #192D3C;
+}
+
+.grid_1 {
+	font-size: 130% ;
+	font-weight: 600%;
+	height: 65%;
+	width: 37%;
+	text-decoration: none;
+	margin-top: 20px;
+	font-family: Segoe Print;
+	display: inline;
+}
+
+h2 {
+	font-family: Segoe Print;
+}
+
+.profileContainer {
+	height: 98%;
+	width: 99%;
+	position: absolute;	
+
+}
+
+.container {
+	margin-right: auto;
+	margin-left: auto;
+}
+.bodyContent_1 {
+	height: 100%;
+	width: 100%;
+	opacity: 0.4;
+	background-color: white;
+}
+
+.cover {
+	overflow: hidden;
+	float: left;
+	display: inline;
+}
+
+.cover.profile {
+	position: relative;
+	background: none repeat scroll 0% 0% #FFF;
+	height: 15%;
+	width: 64.2%;
+}
+
+.cover.friends {
+	position: relative;
+	background: none repeat scroll 0% 0% #FFF;
+	height: 15%;
+	width: 20%;	
+}
+
+.cover.profilePic {
+	height: 5%;
+	width: 40%;
+	margin-top: 8%;
+	margin-left: 15%;
+    /* Rotate div */
+	-ms-transform: rotate(-30deg); /* IE 9 */
+	-webkit-transform: rotate(-30deg); /* Chrome, Safari, Opera */
+	transform: rotate(-30deg); /* Standard syntax */
+}
+
+.left {
+	overflow: hidden;
+}
+
+.left.col {
+	height: 100%;
+	width: 15%;
+	float: left;
+	display: inline;	
+}

@@ -1,0 +1,71 @@
+<html>
+<head>
+	<title>Welcome to amistad LogIn, Sign Up or Learn more</title>
+	<link rel = "stylesheet" type= "text/css" href = "stylesheets/style.css">
+	<script type="text/javascript" src = 'javascripts/validation.js'></script>
+	<script type="text/javascript" src = 'jquery/jquery-2.1.1.js'></script>
+</head>
+<body>
+	<div class = 'mainDivision'>
+		<div class = 'header'>
+			<div class = 'headerContent'>
+				<div class = 'kaustBookTitle'>
+					<a href="index.html" class = 'kaustBookTitleLink'>amistad</a>
+				</div>
+				<div class = 'loginBox'>
+					<form id =  'signIn' action = '/login' method = 'POST'>
+						<input type = 'email' class = 'signIn' name = 'username' placeholder = '&nbsp;Enter your email - Id' required = 'required'>
+						<input type = 'password' class = 'signIn' name = 'password' placeholder = '&nbsp;Enter your password' required = 'required'>
+
+						<div class = 'remindMeLater'>
+							<input type="checkbox" name="remindMe"><p class = 'keepMeLoggedIn'>Keep me logged in</p>
+						</div>
+						<input type = 'submit' class = 'logInButton' value = 'Log In'>
+					</form>
+				</div>
+			</div>
+		</div>
+
+
+		<div class = 'bodyContent'>
+			<img src="./images/worldMap.png" class = 'backgroundImage'>
+			<div class = 'registrationForm'>
+				<h3 class = 'signUpTitle'>Sign Up</h3>
+				<p class = 'caption'>It's free and always will be</p>
+				<form id = 'regForm' class = 'signUpForm' name = 'reg' action = 'registration' onsubmit = 'checkValidation(reg_email_, reg_email_confirmation__)' method = 'POST'>
+					<input type = 'text' class = 'inputBox' name = 'firstname' placeholder = '&nbsp;First Name' maxLength = '20'  required = 'required'>
+					<input type = 'text' class = 'inputBox' name = 'lastname' placeholder = '&nbsp;Last Name' required = 'required'>
+					<input type = 'email' id = 'email' class = 'bigInputBox' name = 'reg_email_' placeholder = '&nbsp;E-mail Id'  required = 'required'>
+					<input type = 'email' id = 'email_confirmation' class = 'bigInputBox' name = 'reg_email_confirmation__' placeholder = '&nbsp; Re-Enter E-mail Id' onblur="emailsMatching()" required = 'required'>
+
+					<span id = 'report'></span>
+					<input type = 'username' class = 'bigInputBox' name = 'username' placeholder = '&nbsp;Enter a username' pattern=".{5,10}" required title="5 to 10 characters" required = 'required'>
+					<input type = 'password' class = 'bigInputBox' name = 'reg_passwd__' placeholder = '&nbsp;New Password' pattern=".{8,20}" required title="8 to 20 characters" required = 'required'><br>
+					<span class = 'inputBox' id = 'birthday'>
+						Birthday<br>
+
+						<input type = 'text' id = 'Day' pattern=".{2,2}" required title="date should be written as DD" class = 'birthday' max = '31' placeholder = '&nbsp;Day'  name = 'day'>
+						<input type = 'text' id = 'Month' class = 'birthday' max = '12' pattern=".{2,2}" required title="date should be written as MM" placeholder = '&nbsp;Month'  name = 'month'>
+						<input type = 'text' id = 'year' class = 'birthday' pattern=".{4,4}" required title="date should be written as YYYY" placeholder = '&nbsp;Year'  name = 'year' onblur="dateVarificationAndReport()">
+
+						<span id = 'dateReport'></span>
+
+					</span>	<br><br>
+					<input type="radio" class = 'gender' name="sex" value="male" required>Male
+					<input type="radio" class = 'gender' name="sex" value="female">Female
+
+ 					<p class = 'note'>By clicking Sign Up, you agree to our <a href="https://www.facebook.com/legal/terms" class = 'linkDesign'>Terms</a> and that you have read our <a href="https://www.facebook.com/about/privacy" class = 'linkDesign'>Data Use Policy</a>, including our <a href="https://www.facebook.com/help/cookies" class = 'linkDesign'>Cookie Use</a>.</p>
+
+					<input type="submit" value="Create Account" class="register-button" onclick = 'checkAllValidations()'>		
+				</form>
+			</div>
+		</div>
+	</div>
+	<div class = 'footer'>
+		<div class = 'headerContent'>
+			<h1 class = 'kaustbookTitle'><font align = 'right' color = 'white'>&copy; amistad 2014</font></h1>
+		</div>
+	</div>
+
+</body>
+</html>

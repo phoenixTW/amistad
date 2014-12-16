@@ -1,0 +1,20 @@
+doctype html
+html
+	head
+		title Welcome
+		link(rel='stylesheet', href='/stylesheets/style.css')  
+	body
+		div(class = 'mainDivision')
+			div(class = 'header')
+				div(class = 'headerContent')
+					div(class = 'kaustBookTitle')
+						a(href = 'index' class = 'kaustBookTitleLink') amistad
+					div(class = 'loginBox')
+			
+			div(class = 'bodyContent')
+				div(class = 'errorComment', align = 'center')
+					h1(class = 'greetings') Welcome #{userInfo.firstname} #{userInfo.lastname}
+					h1(class = 'thankyou') Thank you for connecting with us
+					p(class = 'redirection') click 
+						a(href = 'index.html') here
+						&nbsp; to login
