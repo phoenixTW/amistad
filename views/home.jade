@@ -1,27 +1,12 @@
-doctype html
-html
-	head
-		title Welcome to KaustBook LogIn, Sign Up or Learn more
-		meta(name="viewport" content="width=device-width, initial-scale=1.0")
-		meta(http-equiv="X-UA-Compatible" content="IE=edge")
-		link(rel='stylesheet', href='/stylesheets/style.css')
-		link(rel='stylesheet', href='/stylesheets/pages.css')
-	body
-		div(class = 'mainDivision')
-			div(class = 'templateBody')
-				div(class = 'bodyContainer')
-					div(class = 'grid_1')
-						a(href = 'index' class = 'kaustBookTitleLink') amistad
-			
-			div(class = 'profileContainer')
-				div(class = 'container')
-					div(class = 'bodyContent_1')
-						div(class = 'left col')
-							div(class = 'cover profilePic') Profile pics
-						div(class = 'cover profile') cover pics
-						div(class = 'cover friends') Friends
-				//- div(class = 'errorComment', align = 'center')
-				//- 	h1(class = 'greetings') Hello
-				//- 	h2 #{email}
-				//- 	a(href = '/logout' method = 'post') LogOut
+extends layout
+block vars
+	- var title = "amistad | Home"
 
+block links
+	link(rel='stylesheet', href='/stylesheets/home.css')
+	script(type="text/javascript" src="javascripts/index-main.js")
+
+block content
+	div(class = "content")
+		div(class = 'left column')
+		div(class = 'left body')

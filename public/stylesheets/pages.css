@@ -1,12 +1,13 @@
-div {
+/*div {
 	border: 2px black solid;
 }
-
+*/
 
 .postForm {
 	height: 100%;
-	width: 50%;
+	width: 30%;
 	float: left;
+	margin: 2%;
 	display: inline;
 }
 .container {
@@ -16,8 +17,9 @@ div {
 }
 
 .postBox {
-	height: 70%;
+	height: 40px;
 	width: 50%;
+	margin-left: 20%;
 }
 .bodyContainer {
 	height: 10%;

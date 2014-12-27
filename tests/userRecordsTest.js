@@ -43,9 +43,17 @@ describe('users',function(){
 		});
 
 		describe('#insertPost', function() {
-			it('should insert hello for kaustav.ron@gmail.com into posts table', function () {
+			it('should insert hello for kaustav.ron@gmail.com into posts table', function (done) {
+
+				var getPostsCallBack = function (error, posts) {
+					assert.notOk(error);
+					assert.deepEqual(posts, collectionOfPost);
+					done();
+				};
+
 				var callback = function (err) {
 					assert.notOk(err);
+					userRecords.getPosts(getPostsCallBack);
 				};
 
 				var insertedPost = {
@@ -53,10 +61,64 @@ describe('users',function(){
 					date: '4 jun 2014',
 					from: 'kaustav.ron@gmail.com'
 				};
-				// assert.deepEqual(module.queryParser.insertQueryMaker('tableName', ['value1', 'value2'], ['field1', 'field2']), expectedQuery);
-				// var fields = ['hello', '4 jun 2014', 'kaustav.ron@gmail.com'];
-				// var insertPostQuery = module.queryParser.insertQueryMaker('posts', ['post', 'date', 'email_id'], fields);
+
+				var collectionOfPost = [ { id: 1,
+					post: 'hello World',
+					date: '29 may 2014',
+					email_id: 'kaustav.ron@gmail.com' },
+					{ id: 2,
+					post: 'again hello World',
+					date: '30 may 2014',
+					email_id: 'prasenjitc@gmail.com' },
+					{ id: 3,
+					post: 'hello',
+					date: '4 jun 2014',
+					email_id: 'kaustav.ron@gmail.com' }];
+
 				userRecords.insertPosts(insertedPost, callback);	
+			});
+
+			it('should return error for maheshkolla@gmail.com inserting something into posts table', function (done) {
+
+				var callback = function (err) {
+					assert.ok(err);
+					done();
+				};
+
+				var insertedPost = {
+					description: 'hello',
+					date: '4 jun 2014',
+					from: 'maheshkolla@gmail.com'
+				};
+				userRecords.insertPosts(insertedPost, callback);	
+			});
+		});
+		
+		describe('#getIndivisualPosts', function () {
+			it('should return the posts made by kaustav.ron@gmail.com', function (done){
+				var getPostsCallBack = function (error, posts) {
+					assert.notOk(error);
+					assert.deepEqual(posts, expectedPost);
+					done();
+				};
+
+				var callback = function (err) {
+					assert.notOk(err);
+					userRecords.getIndivisualPosts('kaustav.ron@gmail.com', getPostsCallBack);
+				};
+
+				var insertedPost = {
+					description: 'hello',
+					date: '4 jun 2014',
+					from: 'kaustav.ron@gmail.com'
+				};
+
+				var expectedPost = [
+					{ post: 'hello World', date: '29 may 2014', email_id: 'kaustav.ron@gmail.com' },
+					{ post: 'hello', date: '4 jun 2014', email_id: 'kaustav.ron@gmail.com' }
+				];
+
+				userRecords.insertPosts(insertedPost, callback);												
 			});
 		});
 	});
@@ -144,13 +206,13 @@ describe('users',function(){
 			});
 		});
 
-		describe('#retrievePassword', function() {
+		describe('#getPassword', function() {
 			it('retrieves the password of Kaustav Chakraborty by email_id', function (done) {
 				var email_id = 'kaustav.ron@gmail.com';
 
-				var callback = function (err, password) {
+				var callback = function (err, data) {
 					assert.notOk(err);
-					assert.deepEqual(password.password, '12345');
+					assert.deepEqual(data.password, '12345');
 					done();
 				};
 
@@ -160,9 +222,9 @@ describe('users',function(){
 			it('retrieves the password of Prasenjit Chakraborty by email_id', function (done) {
 				var email_id = 'prasenjitc@gmail.com';
 
-				var callback = function (err, password) {
+				var callback = function (err, data) {
 					assert.notOk(err);
-					assert.deepEqual(password.password, '54321');
+					assert.deepEqual(data.password, '54321');
 					done();
 				};
 				userRecords.getPassword(email_id, callback);
@@ -179,5 +241,32 @@ describe('users',function(){
 			});
 		});
 
+		describe('#getUserName', function() {
+			it('should return Kaustav Chakraborty for kaustav.ron@gmail.com', function () {
+				var expName = "Kaustav Chakraborty";
+				var callback = function (error, name) {
+					assert.deepEqual(expName, name.name);
+				};
+
+				userRecords.getUserName('kaustav.ron@gmail.com', callback);
+			});
+
+			it('should return Prasenjit Chakraborty for prasenjitc@gmail.com', function () {
+				var expName = "Prasenjit Chakraborty";
+				var callback = function (error, name) {
+					assert.deepEqual(expName, name.name);
+				};
+
+				userRecords.getUserName('prasenjitc@gmail.com', callback);
+			});
+
+			it('should return Error for wrongId@gmail.com', function () {
+				var callback = function (error, name) {
+					assert.ok(error);
+				};
+
+				userRecords.getUserName('wrongId@gmail.com', callback);
+			});
+		});
 	});
 });

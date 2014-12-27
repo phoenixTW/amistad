@@ -1,7 +1,29 @@
 doctype html
+block vars
 html
-  head
-    title= title
-    link(rel='stylesheet', href='/stylesheets/style.css')
-  body
-    block content
+	head
+		title= title
+		link(rel='stylesheet', href='/stylesheets/layout.css')
+		meta(meta name="description" content="website description")
+		meta(meta name="keywords" content="website keywords, website keywords")
+		meta(http-equiv="content-type" content="text/html; charset=UTF-8")
+		script(type="text/javascript" src="javascripts/modernizr-1.5.min.js")
+		script(type="text/javascript" src="javascripts/jquery.js")
+		script(type="text/javascript" src="javascripts/jquery.easing-sooper.js")
+		script(type="text/javascript" src="javascripts/jquery.sooperfish.js")
+		block links
+	body
+	div(id="main")
+		header
+			div(id="logo")
+				div(id="logo_text")
+					h1
+						a(href="/practice") amistad
+			nav
+				div(id="menu_container")
+					ul(class="sf-menu" id="nav")
+						<li><a href="/practice">Home</a></li>
+						<li><a href="friends">Friends</a></li>
+						<li><a href="photos">Snaps</a></li>
+
+		block content

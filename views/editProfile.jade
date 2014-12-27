@@ -1,0 +1,39 @@
+extends layout
+block vars
+	- var title = "amistad | Edit Profile"
+block links
+	link(rel='stylesheet' href='/stylesheets/home.css')
+	link(rel='stylesheet' href='/stylesheets/style.css')
+block content
+	div(class = 'container')
+		h1 EDIT YOUR PROFILE
+		<hr></hr>
+		h3 Change Your Password
+		div(class = 'resetPassword')
+			form(id = 'resetPwd' action = '/resetPassword' method = 'post')
+				input(type = 'text' class = 'input' name = 'oldPwd' placeholder = 'Old Password' pattern=".{8,20}" required = 'required')
+				br
+				input(type = 'text' class = 'input' name = 'newPwd' placeholder = 'New Password' pattern=".{8,20}" required = 'required')
+				br
+				input(type = 'text' class = 'input' name = 'newPwdRpt' placeholder = 'New Password Again' pattern=".{8,20}" required = 'required')
+				br
+				input(type = 'submit' class = 'register-button' name = 'newPwdRpt' value = 'Change')
+		<hr></hr>
+
+		h3 Change Profile Info
+		div(class = 'persona')
+			form(id = 'resetPwd' action = '/changePersona' method = 'post')
+				input(type = 'text' class = 'input' name = 'first_name' placeholder = ' First Name' required = 'required')
+				input(type = 'text' class = 'input' name = 'last_name' placeholder = ' Last Name' required = 'required')
+				br
+				input(type = 'text' class = 'input' name = 'nationality' placeholder = ' Nationality' required = 'required')
+				input(type = 'text' class = 'input' name = 'state' placeholder = ' State' required = 'required')
+				br
+				|Reletionship Status :&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+				|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+				select(class = 'input' name = 'rel')
+					option(value = 'single') Single
+					option(value = 'engaged') In A Reletionship
+					option(value = 'married') Married
+				input(type = 'submit' class = 'register-button' name = 'newPwdRpt' value = 'Change')
+		<hr></hr>

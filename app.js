@@ -76,8 +76,13 @@ app.post('/login', passport.authenticate('local', {
 
 app.get('/practice', isAuthenticated, eventsMethods.goToHome);
 
+app.post('/postForm', isAuthenticated, eventsMethods.uploadComment);
+
 app.get('/logout', eventsMethods.logout);
 
+app.get('/friends', isAuthenticated, eventsMethods.getFriends);
+
+app.get('/editProfile', isAuthenticated, eventsMethods.getEditProfile);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

@@ -1,24 +1,14 @@
 var xmlhttp;
 
+var onPostDone = function(fileNamesHTML){
+	$('#comments').html(fileNamesHTML);
+};
 
-var fileToLI = function(fileName){
-	return "<li>"+fileName+"</li>";
-};
-var onPostDone = function(fileNamesHTML){	
-	$('#result').html(fileNamesHTML);
-};
 var onPost = function(){
-	var path = $('#path').val();
-	$.ajax('/list?path='+path).done(onPostDone).error(function(err){
-		$('#result').html(err.responseText);		
-	});
-};
-
-var onMagic = function(){
-	$.ajax('/magic.html').done(function(resultHtml){
-		$('#magic').html(resultHtml);
-	}).error(function(err){
-		$('#result').html(err.responseText);		
+	var msg = $('#msg').val();
+	$('#msg').val('');	
+	$.post('/postForm', {msg: msg}).done(onPostDone).error(function(err){
+		$('#comments').html(err.responseText);		
 	});
 };
 

@@ -34,9 +34,6 @@ var retrieveUsersRecords = function(db,onComplete){
 	select(db, onComplete, 'information', 'all');
 };
 
-var _insertPosts = function(){
-
-}
 
 var addUser = function (userData, db, onComplete) {
 	var bday = userData.day + '' + userData.month + '' + userData.year;
@@ -48,8 +45,6 @@ var addUser = function (userData, db, onComplete) {
 	insertInto(db, fields, data, 'information', onComplete);
 };
 
-
-
 var retrieveWhereToGet = function (resource) {
 	var whereToGet = Object.keys(resource).map(function (key) {
 		return key + ' = "' + resource[key] + '"';
@@ -58,15 +53,36 @@ var retrieveWhereToGet = function (resource) {
 	return ' where ' + whereToGet;
 };
 
-dbMethods.queryParser = {
-	selectQueryMaker: selectQueryMaker,
-	insertQueryMaker: insertQueryMaker
+var _insertPosts = function(data, db, onComplete){
+	var fields = ['post', 'date', 'email_id'];
+	var data = [data.description, data.date, data.from];
+	insertInto(db, fields, data, 'posts', onComplete);
+};
+
+var _getPosts = function (db, onComplete) {
+	select(db, onComplete, 'posts', 'all');
 };
 
 var retrievePassword = function (email_id, db, onComplete) {
 	var whereToGet = {email_Id: email_id};
 	select(db, onComplete, 'information', 'get', ['password'], whereToGet);
 };
+
+var _getIndivisualPosts = function (email_id, db, onComplete) {
+	var whereToGet = {email_id: email_id};
+	select(db, onComplete, 'posts', 'all', ['post', 'date', 'email_id'], whereToGet);
+};
+
+var _getUserName = function (email_id, db, onComplete) {
+	var whereToGet = {email_id: email_id};
+	select(db, onComplete, 'information', 'get', ['name'], whereToGet);
+};
+
+dbMethods.queryParser = {
+	selectQueryMaker: selectQueryMaker,
+	insertQueryMaker: insertQueryMaker
+};
+
 
 dbMethods.queryHandler = {
 	select: select,
@@ -96,7 +112,10 @@ var init = function(location){
 		getUsers: operate(retrieveUsersRecords),
 		addRecords: operate(addUser),
 		getPassword: operate(retrievePassword),
-		insertPosts: operate(_insertPosts)
+		insertPosts: operate(_insertPosts),
+		getPosts: operate(_getPosts),
+		getIndivisualPosts: operate(_getIndivisualPosts),
+		getUserName: operate(_getUserName)
 	};
 
 	return records;

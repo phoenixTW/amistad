@@ -57,6 +57,7 @@ exports.loginUser = function (username, userPassword, done) {
         nextAttempt: 'login'
     };
 
+    console.log(username, userPassword);
 	dbMethods.getPassword(username, function (error, password) {
 
 		userPassword = SHA256(userPassword).words.join('');
@@ -72,5 +73,48 @@ exports.loginUser = function (username, userPassword, done) {
 };
 
 exports.goToHome = function (request, response) {
-	response.render('practice', {email: request.user.id})
+	var onComplete = function (error, posts) {
+		error && next();
+		if(posts) {
+			posts = posts.reverse();
+
+			var callback = function (err, name) {
+				response.render('practice', {email: request.user.id, name: name.name, posts: posts});
+			};
+			
+			dbMethods.getUserName(request.user.name, callback);
+		}
+	};
+
+
+	dbMethods.getIndivisualPosts(request.user.name, onComplete);
+};
+
+exports.uploadComment = function (request, response, next) {
+	var data = {
+		description: request.body.msg,
+		date: new Date(),
+		from: request.user.name
+	};
+
+	var onComplete = function (error, posts) {
+		error && next();
+		if(posts) {
+			posts = posts.reverse();
+			response.render('comments', {posts: posts});
+		}
+	};
+
+	var callback = function (err) {
+		dbMethods.getIndivisualPosts(request.user.name, onComplete)
+	}
+	dbMethods.insertPosts(data, callback);
+};
+
+exports.getFriends = function (request, response) {
+	response.render('friends');	
+};
+
+exports.getEditProfile = function (request, response) {
+	response.render('editProfile', {email: request.user.id});
 };
