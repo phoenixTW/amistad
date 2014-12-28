@@ -1,9 +1,10 @@
 var assert = require('chai').assert;
 var lib = require('../../resources/amistadLib.js').lib;
+var librery = require('../../resources/librery.js');
 
-console.log('--------------AmistadLibTest------------------');
+console.log('--------------AmistadAllLibTest------------------');
 
-suite('Validations', function() {
+suite('##amistadLib', function() {
 	suite('HTML javascript validations', function () {
 		suite('#compareEmails()', function () {
 			test('should return true when email and confirm emails are same', function () {
@@ -191,3 +192,50 @@ suite('Validations', function() {
 
 	});
 });
+
+
+suite('##librery', function() {
+	suite('UserRoutes Password Comparism', function () {
+		suite('#comparePassword()', function () {
+			test('should return true when 12345 and 12345 are matched', function () {
+				var password = '12345';
+				var confirmPassword = '12345';
+				assert.equal(librery.comparePassword(password, confirmPassword), true);
+			});
+
+			test('should return false when 12345 and 54321 are not matched', function () {
+				var password = '12345';
+				var confirmPassword = '54321';
+				assert.equal(librery.comparePassword(password, confirmPassword), false);
+			});
+
+			test('should return false when 12345 and 12345 are matched but error occured', function () {
+				var password = '12345';
+				var confirmPassword = '12345';
+				var error = new Error('I have an error');
+				assert.equal(librery.comparePassword(password, confirmPassword, error), false);
+			});
+
+			test('should return false when 12345 and 54321 are not matched and error occured', function () {
+				var password = '12345';
+				var confirmPassword = '54321';
+				var error = new Error('I have an error');
+				assert.equal(librery.comparePassword(password, confirmPassword, error), false);
+			});
+
+			test('should return false when password is undefined and no error occured', function () {
+				var password = undefined;
+				var confirmPassword = '54321';
+				assert.equal(librery.comparePassword(password, confirmPassword), false);
+			});
+
+			test('should return false when password is undefined and error occured', function () {
+				var password = undefined;
+				var confirmPassword = '54321';
+				var error = new Error('I have an error');
+				assert.equal(librery.comparePassword(password, confirmPassword, error), false);
+			});
+		});
+	});
+});
+

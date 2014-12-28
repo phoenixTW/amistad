@@ -84,6 +84,8 @@ app.get('/friends', isAuthenticated, eventsMethods.getFriends);
 
 app.get('/editProfile', isAuthenticated, eventsMethods.getEditProfile);
 
+app.post('/editProfile', isAuthenticated, eventsMethods.resetPassword);
+
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
     var err = new Error('Not Found');

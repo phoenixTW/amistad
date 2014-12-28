@@ -4,6 +4,7 @@ var SHA256 = require("crypto-js/sha256");
 
 //Database path
 var dbMethods = require('./userRecords').methods.init('./data/users.db');
+var lib = require('./librery');
 var loggedUsers = {};
 
 // exports.render = function (request, response, renderingPage) {
@@ -57,12 +58,11 @@ exports.loginUser = function (username, userPassword, done) {
         nextAttempt: 'login'
     };
 
-    console.log(username, userPassword);
 	dbMethods.getPassword(username, function (error, password) {
 
 		userPassword = SHA256(userPassword).words.join('');
     
-		if(error || password == undefined || password.password != userPassword){
+		if(!lib.comparePassword(userPassword, password.password, error)){
 			done(null, null);
 			return false;
 		}
@@ -116,5 +116,30 @@ exports.getFriends = function (request, response) {
 };
 
 exports.getEditProfile = function (request, response) {
-	response.render('editProfile', {email: request.user.id});
+	response.render('editProfile');
+};
+
+//reseting the password
+
+exports.resetPassword = function (request, response) {
+	var userPwdData = request.body;
+	var oldPassword = SHA256(userPwdData.oldPwd).words.join('');
+
+	var uPwdCallback = function (error) {
+		error && response.render('editProfile', {message: 'Unable to access'});
+		!error && response.render('editProfile', {message: 'Password Updated Successfully'});
+	};
+
+	var getPwdCallback = function (error, passwordObj) {
+		if(lib.comparePassword(oldPassword, passwordObj.password, error) && 
+			lib.comparePassword(userPwdData.newPwd, userPwdData.newPwdRpt, error)){
+			var newPassword = SHA256(userPwdData.newPwd).words.join('');
+			var reqData = {reg_email_ : request.user.id, password : newPassword};
+			dbMethods.updatePassword(reqData, uPwdCallback);
+			return;
+		}
+		
+		response.render('editProfile', {message: 'Password didn`t matched'});
+	};
+	dbMethods.getPassword(request.user.id, getPwdCallback);
 };

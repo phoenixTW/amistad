@@ -78,6 +78,12 @@ var _getUserName = function (email_id, db, onComplete) {
 	select(db, onComplete, 'information', 'get', ['name'], whereToGet);
 };
 
+var _updatePassword = function (data, db, onComplete) {
+	var query = 'update information set password = "' + data.password +
+			'" where email_id = "' + data.reg_email_ + '";';
+	db.run(query, onComplete);
+};
+
 dbMethods.queryParser = {
 	selectQueryMaker: selectQueryMaker,
 	insertQueryMaker: insertQueryMaker
@@ -115,7 +121,8 @@ var init = function(location){
 		insertPosts: operate(_insertPosts),
 		getPosts: operate(_getPosts),
 		getIndivisualPosts: operate(_getIndivisualPosts),
-		getUserName: operate(_getUserName)
+		getUserName: operate(_getUserName),
+		updatePassword: operate(_updatePassword)
 	};
 
 	return records;

@@ -7,9 +7,6 @@
 	src: local("Kingthings Xander"), url(./fonts/Kingthings Xander.ttf);
 }
 
-a {
-	color: white;
-}
 .greetings {
 	font-size: 52px;
 	font-family: Trebuchet MS;

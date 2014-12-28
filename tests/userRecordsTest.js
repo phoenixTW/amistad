@@ -241,6 +241,49 @@ describe('users',function(){
 			});
 		});
 
+		describe('#updatePassword', function() {
+			it('update the password of Kaustav Chakraborty by email_id', function (done) {
+				var email_id = 'kaustav.ron@gmail.com';
+				var reqData = {reg_email_: email_id, password : '11111'};
+
+				var onComplete = function(error) {
+
+					assert.notOk(error);
+
+					var callback = function (err, data) {
+						assert.notOk(err);
+						assert.deepEqual(data.password, '11111');
+						done();
+					};
+
+					userRecords.getPassword(email_id, callback);
+				};
+
+				userRecords.updatePassword(reqData, onComplete);
+			});
+
+			it('update the password of Prasenjit Chakraborty by email_id', function (done) {
+				var email_id = 'prasenjitc@gmail.com';
+				var reqData = {reg_email_: email_id, password : '11111'};
+
+				var onComplete = function(error) {
+
+					assert.notOk(error);
+
+					var callback = function (err, data) {
+						assert.notOk(err);
+						assert.deepEqual(data.password, '11111');
+						done();
+					};
+
+					userRecords.getPassword(email_id, callback);
+				};
+
+				userRecords.updatePassword(reqData, onComplete);
+			});
+		});
+
+
 		describe('#getUserName', function() {
 			it('should return Kaustav Chakraborty for kaustav.ron@gmail.com', function () {
 				var expName = "Kaustav Chakraborty";
