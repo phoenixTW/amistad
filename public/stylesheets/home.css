@@ -89,21 +89,29 @@
 .link {
 	text-decoration: none;
 	float: center;
-	margin-left: 90px;
 	margin-top: 20px;
 	color: black;
 }
 
 .list {
 	margin-top: 40px;
+	text-align: center;
 }
 
 .container {
-	margin-top: 30px;
+/*	margin-top: 30px;
 	height: auto;
 	width: 100%;
 	background-color: white;
-	opacity: 0.9;	
+	opacity: 0.9;	*/
+	margin-top: 30px;
+	font-size: 24px;
+	background: white;
+	width: 1500px;
+	opacity: 0.7;
+	float: left;
+	opacity: 0.9;
+	display: inline;
 }
 
 .container h1, h3 {
@@ -128,7 +136,7 @@
 	height: 400px;
 	width: 300px;
 	margin-top: 30px;
-	margin-left: 720px;
+	margin-left: 600px;
 }
 
 .persona {
@@ -148,4 +156,27 @@
 	border-color: black;
 	font-size: 18px;
 	background-color: white;
+}
+
+h4 {
+	color: black;
+	margin-left: 50px;
+}
+
+h5 {
+	color: black;
+	margin-left: 90px;
+	font-size: 35px;	
+}
+
+.info {
+	height: auto;
+	width: auto;
+	margin-left: 100px;
+	margin-top: 50px;
+}
+
+.info.personal {
+	padding: 5px;
+	margin-bottom: 50px;
 }

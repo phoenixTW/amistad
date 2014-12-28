@@ -25,5 +25,23 @@ html
 						<li><a href="/practice">Home</a></li>
 						<li><a href="friends">Friends</a></li>
 						<li><a href="photos">Snaps</a></li>
+		div(class = 'left column')
+			div(class = "left pic")
+				img(href = "#")
+			div(class = "list")
+				a(class = "link" href = "/practice")
+					p(class = "displayName")
+						span
+						|#{firstname}
+						|#{lastname}
+			div(class = "list")
+				a(class = "link" href = "/editProfile") Edit Your profile
+
+			div(class = "list")
+				a(class = "link" href = "/#{email}") Profile Page
+
+			div(class = "list")
+				a(class = "link" href = "/logout") logout
+
 
 		block content

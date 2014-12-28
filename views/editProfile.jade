@@ -26,11 +26,15 @@ block content
 		h3 Change Profile Info
 		div(class = 'persona')
 			form(id = 'resetPwd' action = '/changePersona' method = 'post')
-				input(type = 'text' class = 'input' name = 'first_name' placeholder = ' First Name' required = 'required')
-				input(type = 'text' class = 'input' name = 'last_name' placeholder = ' Last Name' required = 'required')
+				input(type = 'text' class = 'input' name = 'first_name' placeholder = ' First Name' value = '#{firstname}' required = 'required')
+				input(type = 'text' class = 'input' name = 'last_name' placeholder = ' Last Name' value = '#{lastname}' required = 'required')
 				br
-				input(type = 'text' class = 'input' name = 'nationality' placeholder = ' Nationality' required = 'required')
-				input(type = 'text' class = 'input' name = 'state' placeholder = ' State' required = 'required')
+				if nationality && state
+					input(type = 'text' class = 'input' name = 'nationality' placeholder = ' Nationality' value = '#{nationality}' required = 'required')
+					input(type = 'text' class = 'input' name = 'state' placeholder = ' State' value = '#{state}' required = 'required')
+				else
+					input(type = 'text' class = 'input' name = 'nationality' placeholder = ' Nationality' required = 'required')
+					input(type = 'text' class = 'input' name = 'state' placeholder = ' State' required = 'required')
 				br
 				|Reletionship Status :&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 				|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
@@ -38,5 +42,5 @@ block content
 					option(value = 'single') Single
 					option(value = 'engaged') In A Reletionship
 					option(value = 'married') Married
-				input(type = 'submit' class = 'register-button' name = 'newPwdRpt' value = 'Change')
+				input(type = 'submit' class = 'register-button' value = 'Change')
 		<hr></hr>

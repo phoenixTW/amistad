@@ -1,0 +1,31 @@
+extends layout
+block vars
+	- var title = "amistad | Profile Page"
+block links
+	link(rel='stylesheet' href='/stylesheets/home.css')
+	link(rel='stylesheet' href='/stylesheets/style.css')
+block content
+	div(class = 'container')
+		h1 Profile Page
+		h4 Personal Info
+		<hr></hr>
+		div(class = 'info personal')
+			span
+				h5 Full Name: #{user.firstname} #{user.lastname}
+				h5 Username: #{user.username}
+				h5 Birthday: #{user.birthday}
+				h5 I am #{user.gender}
+		h4 Residential Info
+		<hr></hr>
+		div(class = 'info personal')
+			span
+				h5 Hey, I am #{basic.nationality}
+				h5 I live in #{basic.state}
+
+		h4 Relationship status
+		<hr></hr>
+		div(class = 'info personal')
+			span
+				h5 I am #{basic.relationship}
+
+

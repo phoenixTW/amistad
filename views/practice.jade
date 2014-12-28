@@ -8,16 +8,6 @@ block links
 	link(rel='stylesheet' href='/stylesheets/home.css')
 	script(type="text/javascript" src="javascripts/index-main.js")
 block content
-	div(class = 'left column')
-		div(class = "left pic")
-			img(href = "#")
-		div(class = "list")
-			a(class = "link" href = "?#{email}") #{name}
-		div(class = "list")
-			a(class = "link" href = "/editProfile") Edit Your profile		
-		div(class = "list")
-			a(class = "link" href = "/logout") logout
-
 	div(class = 'left body')
 		div(class = 'postForm' id = 'postForm')
 			input(class = 'box', id = 'msg' placeholder = "what's happening......")
@@ -26,7 +16,8 @@ block content
 			div(id = 'comments')
 				each post in posts
 					div(class = "showComments") 
-						p Name : #{post.email_id}
+						p Name :
+							a(href = "/?#{post.email_id}") #{post.name}
 						p Date: #{post.date}
 						p Comment: #{post.post}
 						<hr></hr>

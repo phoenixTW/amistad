@@ -309,3 +309,8 @@ ul#nav ul li a:hover, ul#nav ul li a:focus {
   color: #CF2605;
   text-shadow: none;
 }
+
+.displayName {
+  text-align: center;
+  color: black;
+}

@@ -13,13 +13,20 @@ var loggedUsers = {};
 
 exports.postLogin = function (request, response) {
 
-    loggedUsers[request.body.username] = {
-        cookies: request.cookies['connect.sid']
-    };
+	var callback = function (err, name) {
+	    loggedUsers[request.body.username] = {
+	    	firstname: name.firstname,
+	    	lastname: name.lastname,
+	        cookies: request.cookies['connect.sid']
+	    };
 
-    delete request.body.password;
+	    delete request.body.password;
 
-    response.redirect('practice');
+	    response.redirect('practice');
+	};
+	
+	dbMethods.getUserName(request.body.username, callback);
+
 };
 
 exports.logout = function (request, response) {
@@ -62,13 +69,15 @@ exports.loginUser = function (username, userPassword, done) {
 
 		userPassword = SHA256(userPassword).words.join('');
     
-		if(!lib.comparePassword(userPassword, password.password, error)){
+		if(password == undefined || !lib.comparePassword(userPassword, password.password, error)){
 			done(null, null);
 			return false;
 		}
 
-        done(null, {id: username, name: username});
-        return true;
+		else{
+        	done(null, {id: username, name: username});
+        	return true;
+        }
 	});
 };
 
@@ -78,11 +87,14 @@ exports.goToHome = function (request, response) {
 		if(posts) {
 			posts = posts.reverse();
 
-			var callback = function (err, name) {
-				response.render('practice', {email: request.user.id, name: name.name, posts: posts});
-			};
-			
-			dbMethods.getUserName(request.user.name, callback);
+			response.render('practice', 
+				{
+					email: request.user.id, 
+					firstname: loggedUsers[request.user.id].firstname,
+					lastname: loggedUsers[request.user.id].lastname,
+					posts: posts
+				}
+			);
 		}
 	};
 
@@ -94,7 +106,9 @@ exports.uploadComment = function (request, response, next) {
 	var data = {
 		description: request.body.msg,
 		date: new Date(),
-		from: request.user.name
+		from: request.user.name,
+		senderName: loggedUsers[request.user.id].firstname + 
+			' ' + loggedUsers[request.user.id].lastname,
 	};
 
 	var onComplete = function (error, posts) {
@@ -116,7 +130,26 @@ exports.getFriends = function (request, response) {
 };
 
 exports.getEditProfile = function (request, response) {
-	response.render('editProfile');
+	renderEditProfile(request, response);
+};
+
+//EditProfile Rendering
+
+var renderEditProfile = function (request, response, message) {
+	var data = {
+		email: request.user.id, 
+		message: message,
+		firstname: loggedUsers[request.user.id].firstname,
+		lastname: loggedUsers[request.user.id].lastname
+	};
+
+
+	dbMethods.getBasicInfo(data.email, function (error, info) {
+		data.nationality = info && info.nationality || undefined;
+		data.state = info && info.state || undefined;
+		response.render('editProfile', data);
+	});
+
 };
 
 //reseting the password
@@ -125,21 +158,71 @@ exports.resetPassword = function (request, response) {
 	var userPwdData = request.body;
 	var oldPassword = SHA256(userPwdData.oldPwd).words.join('');
 
-	var uPwdCallback = function (error) {
-		error && response.render('editProfile', {message: 'Unable to access'});
-		!error && response.render('editProfile', {message: 'Password Updated Successfully'});
+	var uPwdCallback = function (error) { //Callback for #updatePassword
+		error && renderEditProfile(request, response, 'Unable to access');
+		!error && renderEditProfile(request, response, 'Password Updated Successfully');
 	};
 
 	var getPwdCallback = function (error, passwordObj) {
 		if(lib.comparePassword(oldPassword, passwordObj.password, error) && 
 			lib.comparePassword(userPwdData.newPwd, userPwdData.newPwdRpt, error)){
 			var newPassword = SHA256(userPwdData.newPwd).words.join('');
-			var reqData = {reg_email_ : request.user.id, password : newPassword};
+			var reqData = {reg_email_ : request.user.id, password : newPassword}; //Passing email and password
 			dbMethods.updatePassword(reqData, uPwdCallback);
-			return;
 		}
-		
-		response.render('editProfile', {message: 'Password didn`t matched'});
+
+		else
+			renderEditProfile(request, response, 'Password didn`t matched');
 	};
 	dbMethods.getPassword(request.user.id, getPwdCallback);
+};
+
+//Upadte Personal Information
+
+exports.updatePersonalInfo = function (request, response) {
+	var data = {
+		email: request.user.id,
+		firstname: request.body.first_name,
+		lastname: request.body.last_name,
+		nationality: request.body.nationality,
+		state: request.body.state,
+		relStatus: request.body.rel
+	};
+
+	var onComplete = function (error) {
+		error && dbMethods.insertBasicInfo(data, function (err){
+			response.redirect('/practice');
+		});
+
+		!error && response.redirect('/editProfile');
+	};
+	
+	dbMethods.updateBasic(data, onComplete);
+};
+
+//Go to profile
+exports.profile = function (request, response) {
+	var email = request.params.id;
+	var data = {
+		email: email,
+		firstname: loggedUsers[request.user.id].firstname,
+		lastname: loggedUsers[request.user.id].lastname
+	};
+
+	var populateData = function (info, whatInfo) {
+		data[whatInfo] = info;
+		return true;
+	};
+
+	var callback = function (error, info) {
+		error && response.render('profile', {message: 'Unable To Access'});
+		!error && populateData(info, 'user') && dbMethods.getBasicInfo(email, onComplete);
+	};
+
+	var onComplete = function (err, basicInfo) {
+		err && response.render('profile', {message: 'Unable To Access'});
+		!err && populateData(basicInfo, 'basic') && response.render('profile', data);
+	};
+
+	dbMethods.getSingleUser(email, callback);
 };

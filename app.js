@@ -84,7 +84,11 @@ app.get('/friends', isAuthenticated, eventsMethods.getFriends);
 
 app.get('/editProfile', isAuthenticated, eventsMethods.getEditProfile);
 
+app.get('/:id', isAuthenticated, eventsMethods.profile);
+
 app.post('/editProfile', isAuthenticated, eventsMethods.resetPassword);
+
+app.post('/changePersona', isAuthenticated, eventsMethods.updatePersonalInfo);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

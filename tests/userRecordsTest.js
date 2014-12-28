@@ -14,24 +14,23 @@ describe('users',function(){
 
 	describe('userRecords',function(){	
 		describe('#getUsers',function(){
-			it('retrieves two users',function(done){
+			it('retrieves two users',function (done){
 				var callback = function(err,users){
-					var expected = [{
-						  "birthday": "24011994",
-						  "email_id": "kaustav.ron@gmail.com",
-						  "gender": "male",
-						  "name": "Kaustav Chakraborty",
-						  "password": "12345",
-						  "username": "kaustavRon"
-						},
-						{
-						  "birthday": "1121993",
-						  "email_id": "prasenjitc@gmail.com",
-						  "gender": "male",
-						  "name": "Prasenjit Chakraborty",
-						  "password": "54321",
-						  "username": "prasen"}];
-
+					var expected = [ { 
+						firstname: 'Kaustav',
+						lastname: 'Chakraborty',
+						email_id: 'kaustav.ron@gmail.com',
+						password: '12345',
+						username: 'kaustavRon',
+						birthday: '24-01-1994',
+						gender: 'male' },
+						{ firstname: 'Prasenjit',
+						lastname: 'Chakraborty',
+						email_id: 'prasenjitc@gmail.com',
+						password: '54321',
+						username: 'prasen',
+						birthday: '01-12-1993',
+						gender: 'male' } ];
 					assert.notOk(err);
 					assert.lengthOf(users,2);
 					assert.deepEqual(users, expected);
@@ -40,6 +39,35 @@ describe('users',function(){
 				
 				userRecords.getUsers(callback);
 			})
+		});
+
+		describe('#getSingleUser',function(){
+			it('should give the details of kaustav.ron@gmail.com',function (done){
+				var callback = function(err,user){
+					var expected = {
+						  "birthday": "24-01-1994",
+						  "gender": "male",
+						  "firstname": "Kaustav",
+						  "lastname": "Chakraborty",
+						  "username": "kaustavRon"
+						};
+					assert.notOk(err);
+					assert.deepEqual(user, expected);
+					done();
+				};
+				
+				userRecords.getSingleUser('kaustav.ron@gmail.com', callback);
+			});
+
+			it('should give the details of wrongID@gmail.com',function (done){
+				var callback = function(err,user){
+					assert.notOk(err);
+					assert.deepEqual(user, undefined);
+					done();
+				};
+				
+				userRecords.getSingleUser('wrongID@gmail.com', callback);
+			});
 		});
 
 		describe('#insertPost', function() {
@@ -59,21 +87,25 @@ describe('users',function(){
 				var insertedPost = {
 					description: 'hello',
 					date: '4 jun 2014',
-					from: 'kaustav.ron@gmail.com'
+					from: 'kaustav.ron@gmail.com',
+					senderName: 'Kaustav Chakraborty'
 				};
 
 				var collectionOfPost = [ { id: 1,
 					post: 'hello World',
 					date: '29 may 2014',
+					name: 'Kaustav Chakraborty',
 					email_id: 'kaustav.ron@gmail.com' },
 					{ id: 2,
 					post: 'again hello World',
 					date: '30 may 2014',
+					name: 'Prasenjit Chakraborty',
 					email_id: 'prasenjitc@gmail.com' },
 					{ id: 3,
 					post: 'hello',
 					date: '4 jun 2014',
-					email_id: 'kaustav.ron@gmail.com' }];
+					name: 'Kaustav Chakraborty',
+					email_id: 'kaustav.ron@gmail.com' } ];
 
 				userRecords.insertPosts(insertedPost, callback);	
 			});
@@ -110,12 +142,13 @@ describe('users',function(){
 				var insertedPost = {
 					description: 'hello',
 					date: '4 jun 2014',
-					from: 'kaustav.ron@gmail.com'
+					from: 'kaustav.ron@gmail.com',
+					senderName: 'Kaustav Chakraborty'
 				};
 
 				var expectedPost = [
-					{ post: 'hello World', date: '29 may 2014', email_id: 'kaustav.ron@gmail.com' },
-					{ post: 'hello', date: '4 jun 2014', email_id: 'kaustav.ron@gmail.com' }
+					{ post: 'hello World', date: '29 may 2014', name: 'Kaustav Chakraborty', email_id: 'kaustav.ron@gmail.com' },
+					{ post: 'hello', date: '4 jun 2014', name: 'Kaustav Chakraborty', email_id: 'kaustav.ron@gmail.com' }
 				];
 
 				userRecords.insertPosts(insertedPost, callback);												
@@ -165,7 +198,7 @@ describe('users',function(){
 
 	describe('userRecords',function(){	
 		describe('#addRecords',function(){
-			it('create a profile for Ananthu',function(done){
+			it('create a profile for Ananthu',function (done){
 				var records = {
 					firstname: 'Ananthu',
 					lastname: 'RV',
@@ -185,7 +218,7 @@ describe('users',function(){
 				userRecords.addRecords(records, callback);
 			});
 
-			it('Access denied for creating an account with existing email Id',function(done){
+			it('Access denied for creating an account with existing email Id', function (done){
 				var records = {
 					firstname: 'Radhey',
 					lastname: 'Deshkar',
@@ -285,30 +318,72 @@ describe('users',function(){
 
 
 		describe('#getUserName', function() {
-			it('should return Kaustav Chakraborty for kaustav.ron@gmail.com', function () {
-				var expName = "Kaustav Chakraborty";
+			it('should return Kaustav Chakraborty for kaustav.ron@gmail.com', function (done) {
+				var expName = { firstname: "Kaustav", lastname: "Chakraborty"};
 				var callback = function (error, name) {
-					assert.deepEqual(expName, name.name);
+					assert.deepEqual(expName, name);
+					done();
 				};
 
 				userRecords.getUserName('kaustav.ron@gmail.com', callback);
 			});
 
-			it('should return Prasenjit Chakraborty for prasenjitc@gmail.com', function () {
-				var expName = "Prasenjit Chakraborty";
+			it('should return Prasenjit Chakraborty for prasenjitc@gmail.com', function (done) {
+				var expName = {firstname: "Prasenjit", lastname: "Chakraborty"};
 				var callback = function (error, name) {
-					assert.deepEqual(expName, name.name);
+					assert.deepEqual(expName, name);
+					done();
 				};
 
 				userRecords.getUserName('prasenjitc@gmail.com', callback);
 			});
 
-			it('should return Error for wrongId@gmail.com', function () {
+			it('should return Error for wrongId@gmail.com', function (done) {
 				var callback = function (error, name) {
-					assert.ok(error);
+					assert.notOk(error);
+					assert.deepEqual(name, undefined);
+					done();
 				};
 
 				userRecords.getUserName('wrongId@gmail.com', callback);
+			});
+		});
+
+		describe('#updateBasic', function() {
+			it('should update basic information for kaustav.ron@gmail.com', function (done) {
+				var data = {
+					email: 'kaustav.ron@gmail.com',
+					firstname: 'Konko',
+					lastname: 'Ch',
+					nationality: 'Brazilian',
+					state: 'UP',
+					relStatus: 'single'
+				};
+				var callback = function (error, name) {
+					assert.notOk(error);
+					done();
+				};
+
+				userRecords.updateBasic(data.email, callback);
+			});
+
+			describe('#insertBasicInfo', function() {
+				it('should insert basic information for prasenjitc@gmail.com', function (done) {
+					var data = {
+						email: 'prasenjitc@gmail.com',
+						firstname: 'Konko',
+						lastname: 'Ch',
+						nationality: 'Brazilian',
+						state: 'UP',
+						relStatus: 'single'
+					};
+					var callback = function (error) {
+						assert.notOk(error);
+						done();
+					};
+
+					userRecords.insertBasicInfo(data, callback);
+				});
 			});
 		});
 	});
