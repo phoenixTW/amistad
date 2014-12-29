@@ -99,7 +99,7 @@ exports.goToHome = function (request, response) {
 	};
 
 
-	dbMethods.getIndivisualPosts(request.user.name, onComplete);
+	dbMethods.getPosts(onComplete);
 };
 
 exports.uploadComment = function (request, response, next) {
@@ -190,21 +190,26 @@ exports.updatePersonalInfo = function (request, response) {
 	};
 
 	var onComplete = function (error) {
-		error && dbMethods.insertBasicInfo(data, function (err){
-			response.redirect('/practice');
-		});
+		dbMethods.getBasicInfo(data.email, function (error, basicData) {
 
-		!error && response.redirect('/editProfile');
+			error || basicData == null && dbMethods.insertBasicInfo(data, function (err){
+				response.redirect('/practice');
+			});
+
+			!error && basicData != null && response.redirect('/editProfile');
+		});
 	};
 	
 	dbMethods.updateBasic(data, onComplete);
 };
 
-//Go to profile
-exports.profile = function (request, response) {
-	var email = request.params.id;
+//Go to profileInfo
+
+var userInformations = function (request, response, renderPage, method) {
+	var askedEmail = request.params.id;
 	var data = {
-		email: email,
+		askedEmail: askedEmail,
+		email: request.user.id,
 		firstname: loggedUsers[request.user.id].firstname,
 		lastname: loggedUsers[request.user.id].lastname
 	};
@@ -215,14 +220,44 @@ exports.profile = function (request, response) {
 	};
 
 	var callback = function (error, info) {
-		error && response.render('profile', {message: 'Unable To Access'});
-		!error && populateData(info, 'user') && dbMethods.getBasicInfo(email, onComplete);
+		error && response.render(renderPage, {message: 'Unable To Access'});
+		!error && populateData(info, 'user') && dbMethods.getBasicInfo(askedEmail, onComplete);
 	};
 
 	var onComplete = function (err, basicInfo) {
-		err && response.render('profile', {message: 'Unable To Access'});
-		!err && populateData(basicInfo, 'basic') && response.render('profile', data);
+		err && response.render(renderPage, {message: 'Unable To Access'});
+		
+		if(method && !err) {
+			method(response, askedEmail, data, renderPage, basicInfo);
+			return;
+		}
+
+		!err && populateData(basicInfo, 'basic') && response.render(renderPage, data);
 	};
 
-	dbMethods.getSingleUser(email, callback);
+	dbMethods.getSingleUser(askedEmail, callback);
+};
+
+exports.profileInfo = function (request, response) {
+	userInformations(request, response, 'profileInfo')
+};
+
+//Go to Profile Page 
+exports.profile = function (request, response) {
+	userInformations(request, response, 'profile', getPosts);
+};
+
+var getPosts = function (response, email, data, page, basicInfo) {
+	data.basic = basicInfo;
+	var onComplete = function (error, posts) {
+		error && next();
+		if(posts) {
+			posts = posts.reverse();
+			data.posts = posts;
+			response.render(page, data);
+		}
+	};
+
+
+	dbMethods.getIndivisualPosts(email, onComplete);
 };

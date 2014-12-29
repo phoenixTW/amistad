@@ -84,6 +84,8 @@ app.get('/friends', isAuthenticated, eventsMethods.getFriends);
 
 app.get('/editProfile', isAuthenticated, eventsMethods.getEditProfile);
 
+app.get('/info/:id', isAuthenticated, eventsMethods.profileInfo);
+
 app.get('/:id', isAuthenticated, eventsMethods.profile);
 
 app.post('/editProfile', isAuthenticated, eventsMethods.resetPassword);

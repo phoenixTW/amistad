@@ -17,7 +17,7 @@ block content
 				each post in posts
 					div(class = "showComments") 
 						p Name :
-							a(href = "/?#{post.email_id}") #{post.name}
+							a(href = "/#{post.email_id}") #{post.name}
 						p Date: #{post.date}
 						p Comment: #{post.post}
 						<hr></hr>

@@ -1,31 +1,43 @@
 extends layout
 block vars
-	- var title = "amistad | Profile Page"
+	- var title = "amistad | Profile"
 block links
 	link(rel='stylesheet' href='/stylesheets/home.css')
-	link(rel='stylesheet' href='/stylesheets/style.css')
+	script(type="text/javascript", src = 'jquery/jquery-2.1.1.js')
+	script(type="text/javascript", src = 'javascripts/app-main.js')
+	script(type="text/javascript" src="javascripts/index-main.js")
+
+block pages
+	div(class = "list")
+		a(class = "link" href = "/info/#{email}") My Info
+
 block content
-	div(class = 'container')
-		h1 Profile Page
-		h4 Personal Info
-		<hr></hr>
-		div(class = 'info personal')
+	div(class = 'left body')
+		div(class = 'left body')
+			img(class = 'dp' src = "/images/main.png")
+			img(class = 'infoAfterDp' src = "/images/main.png")
+		div(class = 'heading') #{user.firstname} #{user.lastname}
+		
+		div(class = 'picAndInfo')
 			span
-				h5 Full Name: #{user.firstname} #{user.lastname}
-				h5 Username: #{user.username}
-				h5 Birthday: #{user.birthday}
-				h5 I am #{user.gender}
-		h4 Residential Info
-		<hr></hr>
-		div(class = 'info personal')
-			span
-				h5 Hey, I am #{basic.nationality}
-				h5 I live in #{basic.state}
+				if basic
+					h1 Nationality: #{basic.nationality}
+					|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+					h1 I am a #{user.gender}
+					|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+					h1 I am in #{basic.state}
+		div(class = 'postForm' id = 'postForm')
+			input(class = 'box', id = 'msg' placeholder = "what's happening......")
+			input(type = 'submit', id = 'post', value = 'POST')
+			<hr></hr>
+			div(id = 'comments')
+				each post in posts
+					div(class = "showComments") 
+						p Name :
+							a(href = "/#{post.email_id}") #{post.name}
+						p Date: #{post.date}
+						p Comment: #{post.post}
+						<hr></hr>
 
-		h4 Relationship status
-		<hr></hr>
-		div(class = 'info personal')
-			span
-				h5 I am #{basic.relationship}
 
-
+	div(class = 'left chat') here
